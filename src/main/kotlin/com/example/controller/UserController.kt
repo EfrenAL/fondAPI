@@ -57,10 +57,10 @@ class UserController {
             System.out.println("DB checked");
             stmt.executeUpdate("INSERT INTO users " +
                     "(name, lastName, nickName, picture) VALUES " +
-                    "("+ user.name + ","+
-                    user.lastName + "," +
-                    user.nickName + ","+
-                    user.picture + ")")
+                    "('"+ user.name      + "','" +
+                         user.lastName  + "','" +
+                         user.nickName  + "','" +
+                         user.picture   + "')")
             System.out.println("Element inserted");
             return user
 
