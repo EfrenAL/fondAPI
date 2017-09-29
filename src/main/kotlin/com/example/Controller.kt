@@ -51,6 +51,11 @@ class Controller {
 
     }
 
+    @RequestMapping("/users")
+    internal fun db(model: MutableMap<String, Any>): String {
+        return "Hola Jelli"
+    }
+
     @Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
