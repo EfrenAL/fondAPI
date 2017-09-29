@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.web.bind.annotation.*
+import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 import java.util.concurrent.atomic.AtomicLong
@@ -28,6 +29,22 @@ class UserController {
     internal fun getUser():User{
         return User(1,"Marioo", "pio pio", "Muyayo", "" )
     }
+
+    @GetMapping("/users")
+    internal fun getAllUser(): ResultSet? {
+        val connection = dataSource.getConnection()
+        try{
+            val stmt = connection.createStatement()
+            checkDb(stmt)
+            val rs = stmt.executeQuery("SELECT * FROM users")
+            return rs
+
+        } catch (e: Exception) {
+
+        }
+        return null;
+    }
+
 
     @PostMapping("/user")
     internal fun setUser(@RequestBody user: User ):User{
