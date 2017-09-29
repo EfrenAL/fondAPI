@@ -52,7 +52,7 @@ class Controller {
     }
 
     @RequestMapping("/users")
-    internal fun db(model: MutableMap<String, Any>): String {
+    internal fun users(): String {
         return "Hola Jelli"
     }
 
