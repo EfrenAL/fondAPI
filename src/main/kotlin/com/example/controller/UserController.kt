@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.web.bind.annotation.*
 import java.sql.SQLException
+import java.sql.Statement
 import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
 
@@ -34,12 +35,8 @@ class UserController {
         val connection = dataSource.getConnection()
         try{
             val stmt = connection.createStatement()
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS user (name varchar(255), " +
-                    "lastName varchar(255), " +
-                    "nickName varchar(255), " +
-                    "picture varchar(255))")
-
-            stmt.executeUpdate("INSERT INTO user VALUES +"+ user + ")")
+            checkDb(stmt)
+            stmt.executeUpdate("INSERT INTO users VALUES +"+ user + ")")
             return user
 
         } catch (e: Exception) {
@@ -48,5 +45,13 @@ class UserController {
 
         return User(counter.incrementAndGet(), "Marioo", "pio pio", "Muyayo", "" )
     }
+
+    fun checkDb(stmt: Statement){
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (name varchar(255), " +
+                "lastName varchar(255), " +
+                "nickName varchar(255), " +
+                "picture varchar(255))")
+    }
+
 }
 

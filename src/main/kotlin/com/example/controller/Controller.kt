@@ -49,6 +49,33 @@ class Controller {
 
     }
 
+    @RequestMapping("/user")
+    internal fun getUsers(model: MutableMap<String, Any>): String {
+        val connection = dataSource.getConnection()
+        try {
+            val stmt = connection.createStatement()
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (name varchar(255), " +
+                    "lastName varchar(255), " +
+                    "nickName varchar(255), " +
+                    "picture varchar(255))")
+
+            val rs = stmt.executeQuery("SELECT * FROM users")
+
+            val output = ArrayList<String>()
+            while (rs.next()) {
+                output.add(rs.getString("name"))
+            }
+
+            model.put("records", output)
+            return "db"
+        } catch (e: Exception) {
+            connection.close()
+            model.put("message", e.message ?: "Unknown error")
+            return "error"
+        }
+
+    }
+
     @Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
