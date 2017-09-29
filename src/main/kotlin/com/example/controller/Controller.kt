@@ -49,7 +49,7 @@ class Controller {
 
     }
 
-    @RequestMapping("/user")
+    @RequestMapping("/userScreen")
     internal fun getUsers(model: MutableMap<String, Any>): String {
         val connection = dataSource.getConnection()
         try {
