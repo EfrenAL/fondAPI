@@ -14,11 +14,11 @@ import javax.sql.DataSource
 @Controller
 class Controller {
 
-    @Value("\${spring.datasource.url}")
+    /*@Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
     @Autowired
-    lateinit private var dataSource: DataSource
+    lateinit private var dataSource: DataSource*/
 
     @RequestMapping("/")
     internal fun index(): String {
@@ -27,7 +27,7 @@ class Controller {
 
     @RequestMapping("/db")
     internal fun db(model: MutableMap<String, Any>): String {
-        val connection = dataSource.getConnection()
+      /*  val connection = dataSource.getConnection()
         try {
             val stmt = connection.createStatement()
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)")
@@ -46,37 +46,11 @@ class Controller {
             model.put("message", e.message ?: "Unknown error")
             return "error"
         }
-
+*/      return "index"
     }
 
-    @RequestMapping("/userScreen")
-    internal fun getUsers(model: MutableMap<String, Any>): String {
-        val connection = dataSource.getConnection()
-        try {
-            val stmt = connection.createStatement()
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (name varchar(255), " +
-                    "lastName varchar(255), " +
-                    "nickName varchar(255), " +
-                    "picture varchar(255))")
 
-            val rs = stmt.executeQuery("SELECT * FROM users")
-
-            val output = ArrayList<String>()
-            while (rs.next()) {
-                output.add(rs.getString("name"))
-            }
-
-            model.put("records", output)
-            return "db"
-        } catch (e: Exception) {
-            connection.close()
-            model.put("message", e.message ?: "Unknown error")
-            return "error"
-        }
-
-    }
-
-    @Bean
+    /*@Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
         if (dbUrl?.isEmpty() ?: true) {
@@ -86,5 +60,5 @@ class Controller {
             config.jdbcUrl = dbUrl
             return HikariDataSource(config)
         }
-    }
+    }*/
 }
