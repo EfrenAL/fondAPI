@@ -49,11 +49,19 @@ class UserController {
     @PostMapping("/user")
     internal fun setUser(@RequestBody user: User ):User{
 
+
         val connection = dataSource.getConnection()
         try{
             val stmt = connection.createStatement()
             checkDb(stmt)
-            stmt.executeUpdate("INSERT INTO users VALUES +"+ user + ")")
+            stmt.executeUpdate("INSERT INTO user " +
+                    "(id, name, lastName, nickName, picture) VALUES " +
+                    "("+ counter.incrementAndGet() + "," +
+                    user.name + ","+
+                    user.lastName + "," +
+                    user.nickName + ","+
+                    user.picture + ")")
+            
             return user
 
         } catch (e: Exception) {
