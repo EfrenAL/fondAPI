@@ -51,12 +51,6 @@ class Controller {
 
     }
 
-    @RestController
-    @RequestMapping("/users")
-    internal fun users(): String {
-        return "{ \"user\": \"Jelle\ }"
-    }
-
     @Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
