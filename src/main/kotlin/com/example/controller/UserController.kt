@@ -55,7 +55,7 @@ class UserController {
             val stmt = connection.createStatement()
             checkDb(stmt)
             System.out.println("DB checked");
-            stmt.executeUpdate("INSERT INTO user " +
+            stmt.executeUpdate("INSERT INTO users " +
                     "(id, name, lastName, nickName, picture) VALUES " +
                     "("+ user.name + ","+
                     user.lastName + "," +
