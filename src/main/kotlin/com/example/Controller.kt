@@ -51,9 +51,10 @@ class Controller {
 
     }
 
+    @RestController
     @RequestMapping("/users")
     internal fun users(): String {
-        return "Hola Jelli"
+        return "{ \"user\": \"Jelle\ }"
     }
 
     @Bean
