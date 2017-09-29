@@ -1,3 +1,14 @@
 package com.example.model
 
-data class User(val id: Long, val name: String, val lastName: String, val nickName: String, val picture: String)
+import java.util.concurrent.atomic.AtomicLong
+
+class User(var id: Long,
+           var name: String,
+           var lastName: String,
+           var nickName: String,
+           var picture: String){
+
+    constructor() : this(1, "","","","")
+}
+
+
