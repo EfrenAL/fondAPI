@@ -56,7 +56,7 @@ class UserController {
             checkDb(stmt)
             System.out.println("DB checked");
             stmt.executeUpdate("INSERT INTO users " +
-                    "(id, name, lastName, nickName, picture) VALUES " +
+                    "(name, lastName, nickName, picture) VALUES " +
                     "("+ user.name + ","+
                     user.lastName + "," +
                     user.nickName + ","+
