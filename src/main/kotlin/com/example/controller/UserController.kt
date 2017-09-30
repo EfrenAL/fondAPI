@@ -94,8 +94,8 @@ class UserController {
     }
 
     fun checkDb(stmt: Statement){
-        stmt.executeUpdate("DROP TABLE IF EXISTS users")
-        System.out.println("DB refreshed")
+        //stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        //System.out.println("DB refreshed")
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
                 "name varchar(255), " +
