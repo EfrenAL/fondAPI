@@ -7,6 +7,8 @@ import com.zaxxer.hikari.HikariDataSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -26,23 +28,39 @@ class UserController {
     val counter = AtomicLong()
 
     @GetMapping("/user/{id}")
-    internal fun getUser():User{
-        return User(1,"Marioo", "pio pio", "Muyayo", "" )
-    }
-
-    @GetMapping("/users")
-    internal fun getAllUser(): ResultSet? {
+    internal fun getUser(@PathVariable id: Long):ResponseEntity<User>{
         val connection = dataSource.getConnection()
         try{
             val stmt = connection.createStatement()
             checkDb(stmt)
+            val rs = stmt.executeQuery("SELECT * FROM users WHERE id IN ("+ id + ")")
+            System.out.println("Select performed: " + rs);
+            return ResponseEntity.ok(User(rs.getLong("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+
+        } catch (e: Exception) {
+            System.out.println("Error: " + e );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/users")
+    internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
+        val connection = dataSource.getConnection()
+        val array = ArrayList<User>()
+
+        try{
+            val stmt = connection.createStatement()
+            checkDb(stmt)
             val rs = stmt.executeQuery("SELECT * FROM users")
-            return rs
+            while (rs.next()) {
+                array.add(User(rs.getLong("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+            }
+            return ResponseEntity.ok(array)
 
         } catch (e: Exception) {
 
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
 
@@ -72,10 +90,13 @@ class UserController {
     }
 
     fun checkDb(stmt: Statement){
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users (name varchar(255), " +
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
+                "id long NOT NULL AUTO_INCREMENT, " +
+                "name varchar(255), " +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
-                "picture varchar(255))")
+                "picture varchar(255), " +
+                "PRIMARY KEY (id))")
     }
 
     @Bean
