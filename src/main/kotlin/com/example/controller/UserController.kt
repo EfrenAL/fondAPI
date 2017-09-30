@@ -91,7 +91,7 @@ class UserController {
 
     fun checkDb(stmt: Statement){
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
-                "id long NOT NULL AUTO_INCREMENT, " +
+                "id int NOT NULL AUTO_INCREMENT, " +
                 "name varchar(255), " +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
