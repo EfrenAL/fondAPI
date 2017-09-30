@@ -30,13 +30,17 @@ class UserController {
     @GetMapping("/user/{id}")
     internal fun getUser(@PathVariable id: Long):ResponseEntity<User>{
         val connection = dataSource.getConnection()
+        var user: User = User()
         try{
             val stmt = connection.createStatement()
             checkDb(stmt)
             System.out.println("Conection with the db successful")
             val rs = stmt.executeQuery("SELECT * FROM users WHERE id = "+ id)
-            System.out.println("Select performed: " + rs);
-            return ResponseEntity.ok(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+            System.out.println("Select performed successfuly");
+            while(rs.next()){
+                user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture"))
+            }
+            return ResponseEntity.ok(user)
 
         } catch (e: Exception) {
             System.out.println("Error: " + e );
