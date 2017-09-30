@@ -47,7 +47,7 @@ class UserController {
     @GetMapping("/users")
     internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
         val connection = dataSource.getConnection()
-        val array = ArrayList<User>()
+        val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
 
         try{
             val stmt = connection.createStatement()
@@ -56,10 +56,10 @@ class UserController {
             val rs = stmt.executeQuery("SELECT * FROM users")
             System.out.println("Request performed successfully")
             while (rs.next()) {
-                array.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
                 System.out.println("Element inserted into the array" )
             }
-            return ResponseEntity.ok(array)
+            return ResponseEntity.ok(list)
 
         } catch (e: Exception) {
             System.out.println("Exception: " + e )
@@ -95,6 +95,7 @@ class UserController {
 
     fun checkDb(stmt: Statement){
         stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        System.out.println("DB refreshed")
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
                 "name varchar(255), " +
