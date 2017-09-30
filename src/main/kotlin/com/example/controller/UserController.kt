@@ -34,7 +34,7 @@ class UserController {
             val stmt = connection.createStatement()
             checkDb(stmt)
             System.out.println("Conection with the db successful")
-            val rs = stmt.executeQuery("SELECT * FROM users WHERE id = "+ id + "")
+            val rs = stmt.executeQuery("SELECT * FROM users WHERE id = "+ id)
             System.out.println("Select performed: " + rs);
             return ResponseEntity.ok(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
 
@@ -54,7 +54,7 @@ class UserController {
             checkDb(stmt)
             System.out.println("Conection with db sucessfully")
             val rs = stmt.executeQuery("SELECT * FROM users")
-            System.out.println("Request performed: " + rs )
+            System.out.println("Request performed successfully")
             while (rs.next()) {
                 array.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
                 System.out.println("Element inserted into the array" )
@@ -62,7 +62,7 @@ class UserController {
             return ResponseEntity.ok(array)
 
         } catch (e: Exception) {
-
+            System.out.println("Exception: " + e )
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
