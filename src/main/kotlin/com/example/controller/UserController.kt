@@ -35,7 +35,7 @@ class UserController {
             checkDb(stmt)
             val rs = stmt.executeQuery("SELECT * FROM users WHERE id IN ("+ id + ")")
             System.out.println("Select performed: " + rs);
-            return ResponseEntity.ok(User(rs.getLong("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+            return ResponseEntity.ok(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
 
         } catch (e: Exception) {
             System.out.println("Error: " + e );
@@ -53,7 +53,7 @@ class UserController {
             checkDb(stmt)
             val rs = stmt.executeQuery("SELECT * FROM users")
             while (rs.next()) {
-                array.add(User(rs.getLong("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+                array.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
             }
             return ResponseEntity.ok(array)
 
@@ -86,7 +86,7 @@ class UserController {
             System.out.println("Exception: " +  e);
         }
 
-        return User(counter.incrementAndGet(), "Marioo", "pio pio", "Muyayo", "" )
+        return User(1, "Marioo", "pio pio", "Muyayo", "" )
     }
 
     fun checkDb(stmt: Statement){

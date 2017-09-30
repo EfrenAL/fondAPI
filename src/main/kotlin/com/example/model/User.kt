@@ -2,7 +2,7 @@ package com.example.model
 
 import java.util.concurrent.atomic.AtomicLong
 
-class User(var id: Long,
+class User(var id: Int,
            var name: String,
            var lastName: String,
            var nickName: String,
