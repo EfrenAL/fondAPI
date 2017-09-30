@@ -91,12 +91,11 @@ class UserController {
 
     fun checkDb(stmt: Statement){
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
-                "id int NOT NULL AUTO_INCREMENT, " +
+                "id SERIAL PRIMARY KEY, " +
                 "name varchar(255), " +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
-                "picture varchar(255), " +
-                "PRIMARY KEY (id))")
+                "picture varchar(255))")
     }
 
     @Bean
