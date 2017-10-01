@@ -6,9 +6,10 @@ class User(var id: Int,
            var name: String,
            var lastName: String,
            var nickName: String,
+           var love: Int,
            var picture: String){
 
-    constructor() : this(1, "","","","")
+    constructor() : this(1, "","","",0,"")
 }
 
 

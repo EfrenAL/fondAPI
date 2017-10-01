@@ -15,6 +15,11 @@ import java.sql.SQLException
 import java.sql.Statement
 import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
+
+
 
 @RestController
 class UserController {
@@ -38,7 +43,7 @@ class UserController {
             val rs = stmt.executeQuery("SELECT * FROM users WHERE id = "+ id)
             System.out.println("Select performed successfuly");
             while(rs.next()){
-                user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture"))
+                user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), 0, rs.getString("picture"))
             }
             return ResponseEntity.ok(user)
 
@@ -47,6 +52,31 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+
+    @PutMapping("/user/{id}")
+    fun giveLove(@PathVariable id: Long, @RequestBody customerUpdate: User): ResponseEntity<User> {
+        val connection = dataSource.getConnection()
+        var user: User = User()
+
+        try{
+            val stmt = connection.createStatement()
+            checkDb(stmt)
+            System.out.println("Conection with the db successful")
+
+            val rs = stmt.executeUpdate("UPDATE users " +
+                    "SET love = " + (user.love + 1) + " WHERE id = "+ user.id)
+
+            System.out.println("User updated correctly");
+
+            return ResponseEntity.status(HttpStatus.OK).body(user)
+
+        } catch (e: Exception) {
+            System.out.println("Error: " + e );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 
     @GetMapping("/users")
     internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
@@ -60,7 +90,7 @@ class UserController {
             val rs = stmt.executeQuery("SELECT * FROM users")
             System.out.println("Request performed successfully")
             while (rs.next()) {
-                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getString("picture")))
+                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), 0, rs.getString("picture")))
                 System.out.println("Element inserted into the array" )
             }
             return ResponseEntity.ok(list)
@@ -94,17 +124,18 @@ class UserController {
             System.out.println("Exception: " +  e);
         }
 
-        return User(1, "Marioo", "pio pio", "Muyayo", "" )
+        return User(1, "Marioo", "pio pio", "Muyayo", 0, "" )
     }
 
     fun checkDb(stmt: Statement){
-        //stmt.executeUpdate("DROP TABLE IF EXISTS users")
-        //System.out.println("DB refreshed")
+        stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        System.out.println("DB refreshed")
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
-                "name varchar(255), " +
+                "name varchar(255), "     +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
+                "love integer, "          +
                 "picture varchar(255))")
     }
 
