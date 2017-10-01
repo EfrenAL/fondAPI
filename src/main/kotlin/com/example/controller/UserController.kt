@@ -55,9 +55,8 @@ class UserController {
 
 
     @PutMapping("/user/{id}")
-    fun giveLove(@PathVariable id: Long, @RequestBody customerUpdate: User): ResponseEntity<User> {
+    fun giveLove(@PathVariable id: Long, @RequestBody user: User): ResponseEntity<User> {
         val connection = dataSource.getConnection()
-        var user: User = User()
 
         try{
             val stmt = connection.createStatement()
@@ -65,7 +64,7 @@ class UserController {
             System.out.println("Conection with the db successful")
 
             val rs = stmt.executeUpdate("UPDATE users " +
-                    "SET love = " + (user.love + 1) + " WHERE id = "+ user.id)
+                    "SET love = " + (user.love++) + " WHERE id = "+ user.id)
 
             System.out.println("User updated correctly");
 
