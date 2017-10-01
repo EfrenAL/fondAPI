@@ -43,7 +43,7 @@ class UserController {
             val rs = stmt.executeQuery("SELECT * FROM users WHERE id = "+ id)
             System.out.println("Select performed successfuly");
             while(rs.next()){
-                user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), 0, rs.getString("picture"))
+                user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture"))
             }
             return ResponseEntity.ok(user)
 
@@ -90,7 +90,7 @@ class UserController {
             val rs = stmt.executeQuery("SELECT * FROM users")
             System.out.println("Request performed successfully")
             while (rs.next()) {
-                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), 0, rs.getString("picture")))
+                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
                 System.out.println("Element inserted into the array" )
             }
             return ResponseEntity.ok(list)
