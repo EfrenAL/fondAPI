@@ -101,6 +101,14 @@ class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    @GetMapping("/refresh")
+    internal fun refreshDB(): ResponseEntity<Int> {
+        val connection = dataSource.getConnection()
+        val stmt = connection.createStatement()
+        stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        //System.out.println("DB refreshed")
+        return ResponseEntity.status(HttpStatus.OK).body(1);
+    }
 
     @PostMapping("/user")
     internal fun setUser(@RequestBody user: User ):User{
@@ -128,8 +136,8 @@ class UserController {
     }
 
     fun checkDb(stmt: Statement){
-        stmt.executeUpdate("DROP TABLE IF EXISTS users")
-        System.out.println("DB refreshed")
+        //stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        //System.out.println("DB refreshed")
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
                 "name varchar(255), "     +
