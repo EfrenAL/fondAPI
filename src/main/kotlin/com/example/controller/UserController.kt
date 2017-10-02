@@ -45,12 +45,15 @@ class UserController {
             while(rs.next()){
                 user = User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture"))
             }
+            connection.close()
             return ResponseEntity.ok(user)
 
         } catch (e: Exception) {
             System.out.println("Error: " + e );
+            connection.close()
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+
     }
 
 
@@ -66,12 +69,14 @@ class UserController {
             val rs = stmt.executeUpdate("UPDATE users " +
                     "SET love = " + (user.love++) + " WHERE id = "+ user.id)
 
-            System.out.println("User updated correctly");
+            System.out.println("User with id: " + user.id + " updated correctly");
 
+            connection.close()
             return ResponseEntity.status(HttpStatus.OK).body(user)
 
         } catch (e: Exception) {
             System.out.println("Error: " + e );
+            connection.close()
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -92,12 +97,15 @@ class UserController {
                 list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
                 System.out.println("Element inserted into the array" )
             }
+            connection.close()
             return ResponseEntity.ok(list)
 
         } catch (e: Exception) {
+            connection.close()
             System.out.println("Exception: " + e )
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
     }
 
     @GetMapping("/refresh")
@@ -125,13 +133,14 @@ class UserController {
                          user.nickName  + "','" +
                          user.picture   + "')")
             System.out.println("Element inserted");
+            connection.close()
             return user
 
         } catch (e: Exception) {
             System.out.println("Exception: " +  e);
+            connection.close()
+            return User(1, "Marioo", "pio pio", "Muyayo", 0, "" )
         }
-
-        return User(1, "Marioo", "pio pio", "Muyayo", 0, "" )
     }
 
     fun checkDb(stmt: Statement){
