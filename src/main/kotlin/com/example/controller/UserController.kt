@@ -69,7 +69,7 @@ class UserController {
             val rs = stmt.executeUpdate("UPDATE users " +
                     "SET love = " + (user.love++) + " WHERE id = "+ user.id)
 
-            System.out.println("User with id: " + user.id + " updated correctly");
+            System.out.println("User with id: " + user.id + " updated to love" + user.love + "correctly");
 
             connection.close()
             return ResponseEntity.status(HttpStatus.OK).body(user)
@@ -95,7 +95,6 @@ class UserController {
             System.out.println("Request performed successfully")
             while (rs.next()) {
                 list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
-                System.out.println("Element inserted into the array" )
             }
             connection.close()
             return ResponseEntity.ok(list)
