@@ -65,9 +65,10 @@ class UserController {
             val stmt = connection.createStatement()
             checkDb(stmt)
             System.out.println("Conection with the db successful")
-            System.out.println("Query: " + "UPDATE users " + "SET love = " + (user.love++) + " WHERE id = "+ user.id)
+            user.love = user.love + 1;
+            System.out.println("Query: " + "UPDATE users " + "SET love = " + (user.love) + " WHERE id = "+ user.id)
             val rs = stmt.executeUpdate("UPDATE users " +
-                    "SET love = " + (user.love++) + " WHERE id = "+ user.id)
+                    "SET love = " + (user.love) + " WHERE id = "+ user.id)
 
             System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
 
