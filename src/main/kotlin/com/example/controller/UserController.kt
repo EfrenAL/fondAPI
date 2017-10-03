@@ -65,11 +65,11 @@ class UserController {
             val stmt = connection.createStatement()
             checkDb(stmt)
             System.out.println("Conection with the db successful")
-
+            System.out.println("Query: " + "UPDATE users " + "SET love = " + (user.love++) + " WHERE id = "+ user.id)
             val rs = stmt.executeUpdate("UPDATE users " +
                     "SET love = " + (user.love++) + " WHERE id = "+ user.id)
 
-            System.out.println("User with id: " + user.id + " updated to love" + user.love + "correctly");
+            System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
 
             connection.close()
             return ResponseEntity.status(HttpStatus.OK).body(user)
