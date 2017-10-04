@@ -2,6 +2,7 @@ package com.example.controller
 
 import com.example.model.Greeting
 import com.example.model.User
+import com.example.service.UserService
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,6 +31,9 @@ class UserController {
     @Autowired
     lateinit private var dataSource: DataSource
 
+    @Autowired
+    lateinit var userService: UserService
+
     val counter = AtomicLong()
 
     @GetMapping("/user/{id}")
@@ -55,6 +59,13 @@ class UserController {
         }
 
     }
+
+
+    @GetMapping("/allUsers")
+    internal fun getUserNew(@PathVariable id: Long):ResponseEntity<List<User>>{
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+    }
+
 
 
     @PutMapping("/user/{id}")
