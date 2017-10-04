@@ -28,7 +28,7 @@ class UserController {
     @Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
-    @Autowired
+    //@Autowired
     lateinit private var dataSource: DataSource
 
     @Autowired
@@ -166,7 +166,7 @@ class UserController {
                 "picture varchar(255))")
     }
 
-    @Bean
+    /*@Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
         if (dbUrl?.isEmpty() ?: true) {
@@ -176,6 +176,6 @@ class UserController {
             config.jdbcUrl = dbUrl
             return HikariDataSource(config)
         }
-    }
+    }*/
 }
 
