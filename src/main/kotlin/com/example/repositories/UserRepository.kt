@@ -39,10 +39,10 @@ class UserRepository {
 
         val rs = stmt.executeQuery("SELECT * FROM users")
         System.out.println("Request performed successfully")
-        connection.close()
         while (rs.next()) {
             list.add(User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
         }
+        connection.close()
         return list
 
     }
@@ -58,13 +58,12 @@ class UserRepository {
         log("Conection with the db successful")
 
         val rs = stmt.executeQuery("SELECT * FROM users WHERE id = " + id)
-        connection.close()
 
         log("All users found successfully");
         while (rs.next()) {
             user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture"))
         }
-
+        connection.close()
         return user
     }
 
@@ -79,10 +78,10 @@ class UserRepository {
 
         user.love = user.love + 1;
         val rs = stmt.executeUpdate("UPDATE users " + "SET love = " + (user.love) + " WHERE id = " + user.id)
-        connection.close()
+
 
         System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
-
+        connection.close()
         return user
     }
 
