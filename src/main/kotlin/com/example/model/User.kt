@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicLong
 //import javax.persistence.Table
 
 
-//@Table(name = "users")
 //@Entity
+//@Table(name = "users")
 class User(var id: Int,
            var name: String,
            var lastName: String,

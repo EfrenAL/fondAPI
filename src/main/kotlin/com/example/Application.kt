@@ -9,17 +9,19 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 import org.springframework.context.annotation.ComponentScan
 
-//@SpringBootApplication(scanBasePackages = arrayOf("com.example.repositories","com.example.model","com.example.controller","com.example.service"))
-//@EnableAutoConfiguration(exclude = arrayOf(DataSourceAutoConfiguration::class, HibernateJpaAutoConfiguration::class))
-//@EnableJpaRepositories("com.example.repositories")
-//@EntityScan("com.example.model")
+
+
+/*@SpringBootApplication
+@ComponentScan(basePackages = arrayOf("com.example.repositories","com.example.model","com.example.controller","com.example.service"))
+@EntityScan("com.example.model")
+@EnableJpaRepositories("com.example.repositories")
+@EnableAutoConfiguration*/
 
 @SpringBootApplication
 @ComponentScan(basePackages = arrayOf("com.example.repositories","com.example.model","com.example.controller","com.example.service"))
-@EntityScan("com.example.model")
+@EnableAutoConfiguration(exclude = arrayOf(DataSourceAutoConfiguration::class, HibernateJpaAutoConfiguration::class))
 //@EnableJpaRepositories("com.example.repositories")
-@EnableAutoConfiguration
-
+@EntityScan("com.example.model")
 open class Application {
     companion object {
         @JvmStatic fun main(args: Array<String>) {

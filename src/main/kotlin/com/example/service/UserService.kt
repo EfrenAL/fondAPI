@@ -13,8 +13,13 @@ class UserService {
     @Autowired
     lateinit var userRepository: UserRepository
 
-    fun getAllUser(dbUrl: String?, dataSource: DataSource): List<User>{
+    fun getAllUser(): List<User>{
         System.out.println("In service")
-        return userRepository.findAll(dbUrl, dataSource);
+        return userRepository.findAll();
     }
+
+    /*fun getAllUser(): List<User>{
+        System.out.println("In service")
+        return userRepository.findAll()
+    }*/
 }

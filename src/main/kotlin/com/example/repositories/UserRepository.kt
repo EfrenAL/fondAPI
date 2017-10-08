@@ -10,23 +10,31 @@ import org.springframework.stereotype.Repository
 import java.sql.SQLException
 import java.sql.Statement
 import javax.sql.DataSource
+import java.sql.DriverManager
+import java.net.URISyntaxException
+import java.sql.Connection
 
+
+
+//interface UserRepository : JpaRepository<User, Long> {}
 @Repository
 class UserRepository {
 
-    /*
+
     @Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
     @Autowired
     lateinit private var dataSource: DataSource
-    */
 
-    fun findAll(dbUrl: String?, dataSource: DataSource): List<User>{
+
+    fun findAll(): List<User>{
 
         System.out.println("In the find all method")
-
+        //val connection: Connection = getConnection()
         val connection = dataSource.getConnection()
+
+
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
 
         try{
@@ -59,4 +67,25 @@ class UserRepository {
                 "love integer, "          +
                 "picture varchar(255))")
     }
+
+    @Throws(URISyntaxException::class, SQLException::class)
+    private fun getConnection(): Connection {
+        //val dbUrl = System.getenv("JDBC_DATABASE_URL")
+        val dbUrl = "jdbc:postgresql://ec2-54-163-235-175.compute-1.amazonaws.com:5432/d1223th2qe00mu?user=ycvjcjtdovkwpp&password=d2d9acc363549dec388e76e22ba620c8b0970b19b66974ccc817c967211c4818&sslmode=require"
+        return DriverManager.getConnection(dbUrl)
+    }
+
+
+    @Bean
+    @Throws(SQLException::class)
+    fun dataSource(): DataSource {
+        if (dbUrl?.isEmpty() ?: true) {
+            return HikariDataSource()
+        } else {
+            val config = HikariConfig()
+            config.jdbcUrl = dbUrl
+            return HikariDataSource(config)
+        }
+    }
 }
+

@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable
 @RestController
 class UserController {
 
-    @Value("\${spring.datasource.url}")
+    /*@Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
     @Autowired
-    lateinit private var dataSource: DataSource
+    lateinit private var dataSource: DataSource*/
 
     @Autowired
     lateinit var userService: UserService
@@ -59,7 +59,7 @@ class UserController {
     @GetMapping("/allusers")
     internal fun getUserNew():ResponseEntity<List<User>>{
         System.out.println("In the controller")
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser(dbUrl, dataSource));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
     }
 
 
@@ -90,7 +90,7 @@ class UserController {
     }*/
 
 
-    @GetMapping("/users")
+    /*@GetMapping("/users")
     internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
         val connection = dataSource.getConnection()
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
@@ -113,7 +113,7 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-    }
+    }*/
 
     /*@GetMapping("/refresh")
     internal fun refreshDB(): ResponseEntity<Int> {
@@ -162,7 +162,7 @@ class UserController {
                 "picture varchar(255))")
     }
 
-    @Bean
+    /*@Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
         if (dbUrl?.isEmpty() ?: true) {
@@ -172,6 +172,6 @@ class UserController {
             config.jdbcUrl = dbUrl
             return HikariDataSource(config)
         }
-    }
+    }*/
 }
 
