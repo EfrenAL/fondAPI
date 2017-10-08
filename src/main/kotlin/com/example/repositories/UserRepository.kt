@@ -12,7 +12,6 @@ import java.sql.Statement
 import javax.sql.DataSource
 
 @Repository
-//interface UserRepository : JpaRepository<User, Long> {}
 class UserRepository {
 
     @Value("\${spring.datasource.url}")

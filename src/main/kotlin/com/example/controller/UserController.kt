@@ -29,14 +29,14 @@ class UserController {
     private var dbUrl: String? = null
 
     //@Autowired
-    lateinit private var dataSource: DataSource
+    //lateinit private var dataSource: DataSource
 
     @Autowired
     lateinit var userService: UserService
 
     val counter = AtomicLong()
 
-    @GetMapping("/user/{id}")
+    /*@GetMapping("/user/{id}")
     internal fun getUser(@PathVariable id: Long):ResponseEntity<User>{
         val connection = dataSource.getConnection()
         var user: User = User()
@@ -58,7 +58,7 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-    }
+    }*/
 
 
     @GetMapping("/allUsers")
@@ -68,7 +68,7 @@ class UserController {
 
 
 
-    @PutMapping("/user/{id}")
+    /*@PutMapping("/user/{id}")
     fun giveLove(@PathVariable id: Long, @RequestBody user: User): ResponseEntity<User> {
         val connection = dataSource.getConnection()
 
@@ -91,10 +91,10 @@ class UserController {
             connection.close()
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-    }
+    }*/
 
 
-    @GetMapping("/users")
+    /*@GetMapping("/users")
     internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
         val connection = dataSource.getConnection()
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
@@ -117,18 +117,18 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-    }
+    }*/
 
-    @GetMapping("/refresh")
+    /*@GetMapping("/refresh")
     internal fun refreshDB(): ResponseEntity<Int> {
         val connection = dataSource.getConnection()
         val stmt = connection.createStatement()
         stmt.executeUpdate("DROP TABLE IF EXISTS users")
         //System.out.println("DB refreshed")
         return ResponseEntity.status(HttpStatus.OK).body(1);
-    }
+    }*/
 
-    @PostMapping("/user")
+    /*@PostMapping("/user")
     internal fun setUser(@RequestBody user: User ):User{
 
         val connection = dataSource.getConnection()
@@ -152,7 +152,7 @@ class UserController {
             connection.close()
             return User(1, "Marioo", "pio pio", "Muyayo", 0, "" )
         }
-    }
+    }*/
 
     fun checkDb(stmt: Statement){
         //stmt.executeUpdate("DROP TABLE IF EXISTS users")
