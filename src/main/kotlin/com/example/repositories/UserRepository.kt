@@ -26,16 +26,17 @@ class UserRepository {
     @Autowired
     lateinit private var dataSource: DataSource
 
-    lateinit var stmt: Statement
-
-
     fun findAll(): List<User> {
 
         val connection = createConnection()
 
         val list: ArrayList<User> = ArrayList()
 
-        connectWithDb(connection)
+        var stmt = connection.createStatement()
+        createTable(stmt)
+        log("Conection with the db successful")
+
+
         val rs = stmt.executeQuery("SELECT * FROM users")
         System.out.println("Request performed successfully")
         connection.close()
@@ -51,7 +52,11 @@ class UserRepository {
         val connection = createConnection()
 
         var user: User = User()
-        connectWithDb(connection)
+
+        var stmt = connection.createStatement()
+        createTable(stmt)
+        log("Conection with the db successful")
+
         val rs = stmt.executeQuery("SELECT * FROM users WHERE id = " + id)
         connection.close()
 
@@ -67,7 +72,11 @@ class UserRepository {
 
         val connection = createConnection()
 
-        connectWithDb(connection)
+
+        var stmt = connection.createStatement()
+        createTable(stmt)
+        log("Conection with the db successful")
+
         user.love = user.love + 1;
         val rs = stmt.executeUpdate("UPDATE users " + "SET love = " + (user.love) + " WHERE id = " + user.id)
         connection.close()
@@ -81,7 +90,9 @@ class UserRepository {
 
         val connection = createConnection()
 
-        connectWithDb(connection)
+        var stmt = connection.createStatement()
+        createTable(stmt)
+        log("Conection with the db successful")
 
         stmt.executeUpdate("INSERT INTO users " +
                 "(name, lastName, nickName, picture) VALUES " +
@@ -103,10 +114,11 @@ class UserRepository {
         return connection
     }
 
-    fun connectWithDb(connection: Connection) {
-        stmt = connection.createStatement()
+    fun connectWithDb(connection: Connection):Statement {
+        var stmt = connection.createStatement()
         createTable(stmt)
         log("Conection with the db successful")
+        return stmt
     }
 
     fun createTable(stmt: Statement) {
