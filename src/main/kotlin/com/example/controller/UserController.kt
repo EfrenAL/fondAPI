@@ -61,8 +61,9 @@ class UserController {
     }*/
 
 
-    @GetMapping("/allUsers")
+    @GetMapping("/allusers")
     internal fun getUserNew(@PathVariable id: Long):ResponseEntity<List<User>>{
+        System.out.println("In the controller")
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
     }
 

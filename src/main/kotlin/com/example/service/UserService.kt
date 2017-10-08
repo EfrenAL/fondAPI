@@ -13,6 +13,7 @@ class UserService {
     lateinit var userRepository: UserRepository
 
     fun getAllUser(): List<User>{
+        System.out.println("In service")
         return userRepository.findAll();
     }
 }

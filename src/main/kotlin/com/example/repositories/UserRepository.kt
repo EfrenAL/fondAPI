@@ -22,6 +22,10 @@ class UserRepository {
 
 
     fun findAll(): List<User>{
+
+        System.out.println("In the find all method")
+        System.out.println("conection: " + dataSource)
+
         val connection = dataSource.getConnection()
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
 
