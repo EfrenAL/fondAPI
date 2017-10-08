@@ -1,6 +1,5 @@
 package com.example.controller
 
-import com.example.model.Greeting
 import com.example.model.User
 import com.example.service.UserService
 import com.zaxxer.hikari.HikariConfig
@@ -11,15 +10,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement
 import java.util.concurrent.atomic.AtomicLong
 import javax.sql.DataSource
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
-
 
 
 @RestController
@@ -28,8 +23,8 @@ class UserController {
     @Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
-    //@Autowired
-    //lateinit private var dataSource: DataSource
+    @Autowired
+    lateinit private var dataSource: DataSource
 
     @Autowired
     lateinit var userService: UserService
@@ -64,7 +59,7 @@ class UserController {
     @GetMapping("/allusers")
     internal fun getUserNew(@PathVariable id: Long):ResponseEntity<List<User>>{
         System.out.println("In the controller")
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser(dbUrl, dataSource));
     }
 
 
@@ -167,7 +162,7 @@ class UserController {
                 "picture varchar(255))")
     }
 
-    /*@Bean
+    @Bean
     @Throws(SQLException::class)
     fun dataSource(): DataSource {
         if (dbUrl?.isEmpty() ?: true) {
@@ -177,6 +172,6 @@ class UserController {
             config.jdbcUrl = dbUrl
             return HikariDataSource(config)
         }
-    }*/
+    }
 }
 

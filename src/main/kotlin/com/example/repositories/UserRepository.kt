@@ -14,17 +14,17 @@ import javax.sql.DataSource
 @Repository
 class UserRepository {
 
+    /*
     @Value("\${spring.datasource.url}")
     private var dbUrl: String? = null
 
     @Autowired
     lateinit private var dataSource: DataSource
+    */
 
-
-    fun findAll(): List<User>{
+    fun findAll(dbUrl: String?, dataSource: DataSource): List<User>{
 
         System.out.println("In the find all method")
-        System.out.println("conection: " + dataSource)
 
         val connection = dataSource.getConnection()
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
@@ -59,17 +59,4 @@ class UserRepository {
                 "love integer, "          +
                 "picture varchar(255))")
     }
-
-    @Bean
-    @Throws(SQLException::class)
-    fun dataSource(): DataSource {
-        if (dbUrl?.isEmpty() ?: true) {
-            return HikariDataSource()
-        } else {
-            val config = HikariConfig()
-            config.jdbcUrl = dbUrl
-            return HikariDataSource(config)
-        }
-    }
-
 }
