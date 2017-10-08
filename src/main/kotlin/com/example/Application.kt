@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 //@SpringBootApplication(scanBasePackages = arrayOf("com.example.repositories","com.example.model","com.example.controller","com.example.service"))
 //@EnableAutoConfiguration(exclude = arrayOf(DataSourceAutoConfiguration::class, HibernateJpaAutoConfiguration::class))
@@ -18,7 +17,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @SpringBootApplication
 @ComponentScan(basePackages = arrayOf("com.example.repositories","com.example.model","com.example.controller","com.example.service"))
 @EntityScan("com.example.model")
-@EnableJpaRepositories("com.example.repositories")
+//@EnableJpaRepositories("com.example.repositories")
+@EnableAutoConfiguration
+
 open class Application {
     companion object {
         @JvmStatic fun main(args: Array<String>) {
