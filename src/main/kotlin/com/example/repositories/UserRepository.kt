@@ -28,14 +28,9 @@ class UserRepository {
 
     fun findAll(): List<User> {
 
-        val connection = createConnection()
-
         val list: ArrayList<User> = ArrayList()
-
-        var stmt = connection.createStatement()
-        createTable(stmt)
-        log("Conection with the db successful")
-
+        val connection = createConnection()
+        var stmt = connectWithDb(connection)
 
         val rs = stmt.executeQuery("SELECT * FROM users")
         System.out.println("Request performed successfully")
@@ -49,13 +44,9 @@ class UserRepository {
 
     fun findUser(id: Long): User? {
 
-        val connection = createConnection()
-
         var user: User = User()
-
-        var stmt = connection.createStatement()
-        createTable(stmt)
-        log("Conection with the db successful")
+        val connection = createConnection()
+        var stmt = connectWithDb(connection)
 
         val rs = stmt.executeQuery("SELECT * FROM users WHERE id = " + id)
 
@@ -70,15 +61,10 @@ class UserRepository {
     fun putUser(id: Long, user: User): User? {
 
         val connection = createConnection()
-
-
-        var stmt = connection.createStatement()
-        createTable(stmt)
-        log("Conection with the db successful")
+        var stmt = connectWithDb(connection)
 
         user.love = user.love + 1;
         val rs = stmt.executeUpdate("UPDATE users " + "SET love = " + (user.love) + " WHERE id = " + user.id)
-
 
         System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
         connection.close()
@@ -88,10 +74,7 @@ class UserRepository {
     fun postUser(user: User): User? {
 
         val connection = createConnection()
-
-        var stmt = connection.createStatement()
-        createTable(stmt)
-        log("Conection with the db successful")
+        var stmt = connectWithDb(connection)
 
         stmt.executeUpdate("INSERT INTO users " +
                 "(name, lastName, nickName, picture) VALUES " +
