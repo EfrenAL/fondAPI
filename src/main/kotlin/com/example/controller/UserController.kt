@@ -90,7 +90,7 @@ class UserController {
     }*/
 
 
-    /*@GetMapping("/users")
+    @GetMapping("/users")
     internal fun getAllUser(): ResponseEntity<ArrayList<User>> {
         val connection = dataSource.getConnection()
         val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
@@ -113,7 +113,7 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-    }*/
+    }
 
     /*@GetMapping("/refresh")
     internal fun refreshDB(): ResponseEntity<Int> {
