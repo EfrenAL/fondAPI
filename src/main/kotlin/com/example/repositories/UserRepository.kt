@@ -15,7 +15,6 @@ import java.net.URISyntaxException
 import java.sql.Connection
 
 
-
 //interface UserRepository : JpaRepository<User, Long> {}
 @Repository
 class UserRepository {
@@ -28,44 +27,104 @@ class UserRepository {
     lateinit private var dataSource: DataSource
 
 
-    fun findAll(): List<User>{
+    fun findAll(): List<User> {
 
-        System.out.println("In the find all method")
-        //val connection: Connection = getConnection()
-        val connection = dataSource.getConnection()
+        val connection = createConnection()
 
+        val list: ArrayList<User> = ArrayList()
 
-        val list: kotlin.collections.ArrayList<User> = java.util.ArrayList()
-
-        try{
-            val stmt = connection.createStatement()
-            checkDb(stmt)
-            System.out.println("Conection with db sucessfully")
-            val rs = stmt.executeQuery("SELECT * FROM users")
-            System.out.println("Request performed successfully")
-            while (rs.next()) {
-                list.add(User(rs.getInt("id"), rs.getString("name"),rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
-            }
-            connection.close()
-            return list
-
-        } catch (e: Exception) {
-            connection.close()
-            System.out.println("Exception: " + e )
-            return ArrayList<User>()
+        val stmt = connectWithDb(connection)
+        val rs = stmt.executeQuery("SELECT * FROM users")
+        System.out.println("Request performed successfully")
+        connection.close()
+        while (rs.next()) {
+            list.add(User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
         }
+        return list
+
     }
 
-    fun checkDb(stmt: Statement){
-        //stmt.executeUpdate("DROP TABLE IF EXISTS users")
-        //System.out.println("DB refreshed")
+    fun findUser(id: Long): User? {
+
+        val connection = createConnection()
+
+        var user: User = User()
+        val stmt = connectWithDb(connection)
+        val rs = stmt.executeQuery("SELECT * FROM users WHERE id = " + id)
+        connection.close()
+
+        log("All users found successfully");
+        while (rs.next()) {
+            user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture"))
+        }
+
+        return user
+    }
+
+    fun putUser(id: Long, user: User): User? {
+
+        val connection = createConnection()
+
+        val stmt = connectWithDb(connection)
+        user.love = user.love + 1;
+        val rs = stmt.executeUpdate("UPDATE users " + "SET love = " + (user.love) + " WHERE id = " + user.id)
+        connection.close()
+
+        System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
+
+        return user
+    }
+
+    fun postUser(user: User): User? {
+
+        val connection = createConnection()
+
+        val stmt = connectWithDb(connection)
+
+        stmt.executeUpdate("INSERT INTO users " +
+                "(name, lastName, nickName, picture) VALUES " +
+                "('" + user.name + "','" +
+                user.lastName + "','" +
+                user.nickName + "','" +
+                user.picture + "')")
+
+        log("Element inserted");
+
+        connection.close()
+
+        return user
+    }
+
+    fun createConnection():Connection{
+        //val connection: Connection = getConnection()    //Local
+        val connection = dataSource.getConnection()   //Production
+        return connection
+    }
+
+    fun connectWithDb(connection: Connection): Statement {
+        val stmt = connection.createStatement()
+        createTable(stmt)
+        log("Conection with the db successful")
+        return stmt
+    }
+
+    fun createTable(stmt: Statement) {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
-                "name varchar(255), "     +
+                "name varchar(255), " +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
-                "love integer, "          +
+                "love integer, " +
                 "picture varchar(255))")
+    }
+
+    fun dropTable(stmt: Statement) {
+        stmt.executeUpdate("DROP TABLE IF EXISTS users")
+        System.out.println("DB refreshed")
+    }
+
+    fun log(string: String) {
+        System.out.println(string)
     }
 
     @Throws(URISyntaxException::class, SQLException::class)

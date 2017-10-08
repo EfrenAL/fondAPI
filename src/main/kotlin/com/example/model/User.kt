@@ -1,10 +1,5 @@
 package com.example.model
 
-import java.util.concurrent.atomic.AtomicLong
-//import javax.persistence.Entity
-//import javax.persistence.Table
-
-
 //@Entity
 //@Table(name = "users")
 class User(var id: Int,
