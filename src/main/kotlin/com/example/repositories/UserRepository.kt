@@ -35,7 +35,7 @@ class UserRepository {
         val rs = stmt.executeQuery("SELECT * FROM users")
         System.out.println("Request performed successfully")
         while (rs.next()) {
-            list.add(User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture")))
+            list.add(User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getString("email"), "", rs.getInt("love"), rs.getString("picture")))
         }
         connection.close()
         return list
@@ -52,7 +52,7 @@ class UserRepository {
 
         log("All users found successfully");
         while (rs.next()) {
-            user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getInt("love"), rs.getString("picture"))
+            user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getString("email"),"", rs.getInt("love"), rs.getString("picture"))
         }
         connection.close()
         return user
@@ -77,9 +77,11 @@ class UserRepository {
         var stmt = connectWithDb(connection)
 
         stmt.executeUpdate("INSERT INTO users " +
-                "(name, lastName, nickName, picture) VALUES " +
+                "(name, lastName, email, password, nickName, picture) VALUES " +
                 "('" + user.name + "','" +
                 user.lastName + "','" +
+                user.email + "','" +
+                user.password + "','" +
                 user.nickName + "','" +
                 user.picture + "')")
 
@@ -91,8 +93,8 @@ class UserRepository {
     }
 
     fun createConnection():Connection{
-        //val connection: Connection = getConnection()    //Local
-        val connection = dataSource.getConnection()   //Production
+        val connection: Connection = getConnection()    //Local
+        //val connection = dataSource.getConnection()   //Production
         return connection
     }
 
@@ -106,9 +108,11 @@ class UserRepository {
     fun createTable(stmt: Statement) {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users ( " +
                 "id SERIAL PRIMARY KEY, " +
+                "email varchar(255) UNIQUE, " +
                 "name varchar(255), " +
                 "lastName varchar(255), " +
                 "nickName varchar(255), " +
+                "password varchar(255), " +
                 "love integer, " +
                 "picture varchar(255))")
     }
