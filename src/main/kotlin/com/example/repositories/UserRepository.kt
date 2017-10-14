@@ -52,7 +52,7 @@ class UserRepository {
 
         log("All users found successfully");
         while (rs.next()) {
-            user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getString("email"),"", rs.getInt("love"), rs.getString("picture"))
+            user = User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getString("email"), "", rs.getInt("love"), rs.getString("picture"))
         }
         connection.close()
         return user
@@ -92,13 +92,29 @@ class UserRepository {
         return user
     }
 
-    fun createConnection():Connection{
-        val connection: Connection = getConnection()    //Local
-        //val connection = dataSource.getConnection()   //Production
+    fun login(user: User): Int {
+        var result: Int
+        var password: String = "-1"
+        val connection = createConnection()
+        var stmt = connectWithDb(connection)
+
+        val rs = stmt.executeQuery("SELECT password FROM users WHERE email = '" + user.email + "'")
+        System.out.println("Request performed successfully")
+        while (rs.next()) {
+            password = rs.getString("password")
+        }
+        connection.close()
+
+        return if (password == user.password) 1 else -1
+    }
+
+    fun createConnection(): Connection {
+        //val connection: Connection = getConnection()    //Local
+        val connection = dataSource.getConnection()   //Production
         return connection
     }
 
-    fun connectWithDb(connection: Connection):Statement {
+    fun connectWithDb(connection: Connection): Statement {
         var stmt = connection.createStatement()
         createTable(stmt)
         log("Conection with the db successful")
