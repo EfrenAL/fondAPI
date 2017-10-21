@@ -95,7 +95,7 @@ class UserRepository {
     fun login(user: User): String {
         var response: String = ""
         var password: String = "-1"
-
+        log("On login method mail: " + user.email + " password: " + user.password)
         val connection = createConnection()
         var stmt = connectWithDb(connection)
 
