@@ -33,7 +33,7 @@ class UserService {
         return ResponseEntity.status(if (user != null) HttpStatus.OK else HttpStatus.BAD_REQUEST).body(user)
     }
 
-    fun login(user: User): Int {
+    fun login(user: User): String {
         return userRepository.login(user)
     }
 
