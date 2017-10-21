@@ -93,8 +93,9 @@ class UserRepository {
     }
 
     fun login(user: User): String {
-        var response: String
+        var response: String = ""
         var password: String = "-1"
+
         val connection = createConnection()
         var stmt = connectWithDb(connection)
 
@@ -105,9 +106,8 @@ class UserRepository {
         }
         connection.close()
 
-        if (password == user.password)
-            response = ""
-        else response = "Authentication problem"
+        if (password != user.password)
+            response = "Authentication problem: " + user.password + " is different to: " + password
         log("Login response: " + response);
         return response
     }
