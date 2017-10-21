@@ -38,7 +38,7 @@ class UserController {
     @PostMapping("/login")
     internal fun login(@RequestBody user: User): ResponseEntity<String> {
         var result = userService.login(user)
-        return ResponseEntity.status(if (result == "") HttpStatus.OK else HttpStatus.BAD_REQUEST).body(result)
+        return ResponseEntity.status(if (result == "") HttpStatus.OK else HttpStatus.UNAUTHORIZED).body(result)
     }
 }
 
