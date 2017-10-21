@@ -93,7 +93,7 @@ class UserRepository {
     }
 
     fun login(user: User): String {
-        var result: Int
+        var response: String
         var password: String = "-1"
         val connection = createConnection()
         var stmt = connectWithDb(connection)
@@ -105,7 +105,11 @@ class UserRepository {
         }
         connection.close()
 
-        return if (password == user.password) "" else "Authentication problem"
+        if (password == user.password)
+            response = ""
+        else response = "Authentication problem"
+        log("Login response: " + response);
+        return response
     }
 
     fun createConnection(): Connection {
