@@ -42,6 +42,26 @@ class UserRepository {
 
     }
 
+    fun findTopUser(num: Int): List<User> {
+
+        val list: ArrayList<User> = ArrayList()
+        val connection = createConnection()
+        var stmt = connectWithDb(connection)
+
+        val rs = stmt.executeQuery("SELECT * FROM users")
+        System.out.println("Request performed successfully")
+        while (rs.next()) {
+            list.add(User(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("nickName"), rs.getString("email"), "", rs.getInt("love"), rs.getString("picture")))
+        }
+
+        connection.close()
+
+        val subList = list.sortedWith(compareBy({ it.love })).subList(list.size-1-num,list.size-1)
+
+        return subList
+
+    }
+
     fun findUser(id: Long): User? {
 
         var user: User = User()
@@ -63,8 +83,7 @@ class UserRepository {
         val connection = createConnection()
         var stmt = connectWithDb(connection)
 
-        user.love = user.love + 1;
-        val rs = stmt.executeUpdate("UPDATE users " + "SET love = " + (user.love) + " WHERE id = " + user.id)
+        val rs = stmt.executeUpdate("UPDATE users " + "SET love = love + 1 WHERE id = " + user.id)
 
         System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
         connection.close()

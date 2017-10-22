@@ -25,6 +25,11 @@ class UserController {
         return userService.getAllUser()
     }
 
+    @GetMapping("/top/{num}")
+    internal fun getTopUsers(@PathVariable num: Int): ResponseEntity<List<User>> {
+        return userService.getTopUser(num)
+    }
+
     @PutMapping("/user/{id}")
     internal fun putUserLove(@PathVariable id: Long, @RequestBody user: User): ResponseEntity<User> {
         return userService.putUser(id, user)

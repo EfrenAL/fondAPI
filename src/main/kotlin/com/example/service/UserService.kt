@@ -18,6 +18,11 @@ class UserService {
         return ResponseEntity.status(if (users != null) HttpStatus.OK else HttpStatus.BAD_REQUEST).body(users)
     }
 
+    fun getTopUser(num:Int): ResponseEntity<List<User>> {
+        var users: List<User>? = userRepository.findTopUser(num)
+        return ResponseEntity.status(if (users != null) HttpStatus.OK else HttpStatus.BAD_REQUEST).body(users)
+    }
+
     fun getUser(id: Long): ResponseEntity<User> {
         var user = userRepository.findUser(id)
         return ResponseEntity.status(if (user != null) HttpStatus.OK else HttpStatus.BAD_REQUEST).body(user)
