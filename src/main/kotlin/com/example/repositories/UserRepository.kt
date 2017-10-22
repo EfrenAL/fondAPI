@@ -82,7 +82,7 @@ class UserRepository {
         val connection = createConnection()
         var stmt = connectWithDb(connection)
 
-        val rs = stmt.executeUpdate("UPDATE users " + "SET love = love + 1 WHERE id = " + user.id)
+        val rs = stmt.executeUpdate("UPDATE users SET love = love + 1 WHERE id = " + user.id)
 
         System.out.println("User with id: " + user.id + " updated to love: " + user.love + " correctly");
         connection.close()
@@ -95,12 +95,13 @@ class UserRepository {
         var stmt = connectWithDb(connection)
 
         stmt.executeUpdate("INSERT INTO users " +
-                "(name, lastName, email, password, nickName, picture) VALUES " +
+                "(name, lastName, email, password, nickName, love, picture) VALUES " +
                 "('" + user.name + "','" +
                 user.lastName + "','" +
                 user.email + "','" +
                 user.password + "','" +
                 user.nickName + "','" +
+                user.love + "','" +
                 user.picture + "')")
 
         log("Element inserted");
