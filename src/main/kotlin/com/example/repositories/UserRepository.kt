@@ -56,10 +56,9 @@ class UserRepository {
 
         connection.close()
 
-        val subList = list.sortedWith(compareBy({ it.love })).subList(list.size-1-num,list.size-1)
+        val subList = list.sortedWith(compareBy({ it.love })).subList(list.size-num,list.size).reversed()
 
         return subList
-
     }
 
     fun findUser(id: Long): User? {
@@ -132,8 +131,8 @@ class UserRepository {
     }
 
     fun createConnection(): Connection {
-        //val connection: Connection = getConnection()    //Local
-        val connection = dataSource.getConnection()   //Production
+        val connection: Connection = getConnection()    //Local
+        //val connection = dataSource.getConnection()   //Production
         return connection
     }
 
