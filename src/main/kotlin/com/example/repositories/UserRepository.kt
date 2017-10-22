@@ -107,7 +107,7 @@ class UserRepository {
         connection.close()
 
         if (password != user.password)
-            response = "Authentication problem: " + user.password + " is different to: " + password
+            response = "Authentication problem"
         log("Login response: " + response);
         return response
     }
